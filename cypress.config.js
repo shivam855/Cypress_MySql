@@ -23,33 +23,35 @@ module.exports = defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
-      on("task", {
-        queryDb: (query) => {
-          return queryTestDb(query.query, config, query.db);
-        },
-      });
-      on("task", {
-        readFromCsv() {
-          return new Promise((resolve, reject) => {
-            let results = [];
-            csv
-              .parseFile("cypress/fixtures/employe.csv", { headers: false })
-              .on("error", (error) => reject(error))
-              .on("data", (row) => results.push(row))
-              .on("end", () => resolve(results));
-          });
-        },
-      });
-      on("task", {
-        writeToCSV({name, rows}) {
-          writeToPath(`./cypress/fixtures/${name}.xlsx`, rows, { headers: true }, { flag: 'a+' });
-          return null;
-        }
-      });
-      on("task", {
-        writeToXlsx,
-      });
+      // on("task", {
+      //   queryDb: (query) => {
+      //     return queryTestDb(query.query, config, query.db);
+      //   },
+      // });
+      // on("task", {
+      //   readFromCsv() {
+      //     return new Promise((resolve, reject) => {
+      //       let results = [];
+      //       csv
+      //         .parseFile("cypress/fixtures/employe.csv", { headers: false })
+      //         .on("error", (error) => reject(error))
+      //         .on("data", (row) => results.push(row))
+      //         .on("end", () => resolve(results));
+      //     });
+      //   },
+      // });
+      // on("task", {
+      //   writeToCSV({name, rows}) {
+      //     writeToPath(`./cypress/fixtures/${name}.xlsx`, rows, { headers: true }, { flag: 'a+' });
+      //     return null;
+      //   }
+      // });
+      // on("task", {
+      //   writeToXlsx,
+      // });
+      return require("./cypress/plugins/index.js")(on, config);
     },
+    // specPattern: './cypress/feature/*.feature',
   },
 });
 

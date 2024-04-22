@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+const AdmZip = require('adm-zip');
+
+Cypress.Commands.add('zipFolder', (folderPath, zipFilePath) => {
+    const zip = new AdmZip();
+    zip.addLocalFolder(folderPath);
+    zip.writeZip(zipFilePath);
+});
+
+Cypress.Commands.add('unzipFile', (zipFilePath, outputFolder) => {
+    const zip = new AdmZip(zipFilePath);
+    zip.extractAllTo(outputFolder, true);
+});
